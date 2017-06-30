@@ -23,6 +23,7 @@ class CreateEmployeesTable extends Migration
             $table->string('location');
             $table->string('designation');
             $table->decimal('basic_pay',8,2);
+            $table->unsignedTinyInteger('days_absent')->default(0);
             $table->decimal('element_car',8,2)->default(0.00);
             $table->decimal('element_rent',8,2)->default(0.00);
             $table->decimal('element_other',8,2)->default(0.00);
@@ -39,6 +40,10 @@ class CreateEmployeesTable extends Migration
             $table->string('house_number')->nullable();
             $table->string('contact_number')->nullable();
             $table->decimal('advance_amount',8,2)->default(0.00);
+            $table->decimal('other_additions', 8,2)->default(0.00);
+            $table->string('other_additions_description')->nullable();
+            $table->decimal('other_deductions', 8,2)->default(0.00);
+            $table->string('other_deductions_description')->nullable();
             $table->timestamps();
         });
     }

@@ -17,8 +17,7 @@ class CreatePeriodsTable extends Migration
             $table->increments('id');
             $table->string('description');
             $table->dateTime('date');
-            $table->json('additions');
-            $table->json('deductions');
+            $table->boolean('has_basic_rate')->default(0);
             $table->timestamps();
         });
     }
