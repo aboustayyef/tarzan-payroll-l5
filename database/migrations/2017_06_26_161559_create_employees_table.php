@@ -18,8 +18,8 @@ class CreateEmployeesTable extends Migration
             $table->char('tarzan_id',5)->unique();
             $table->unsignedSmallInteger('tema_sorting_id');
             $table->string('name');
-            $table->dateTime('date_of_birth')->nullable();
-            $table->dateTime('date_joined')->nullable();
+            $table->date('date_of_birth')->nullable();
+            $table->date('date_joined')->nullable();
             $table->string('location');
             $table->string('designation');
             $table->decimal('basic_pay',8,2);

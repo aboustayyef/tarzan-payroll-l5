@@ -55,19 +55,7 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'name'  =>  'required',
-            'tarzan_id' => 'required',
-            'tema_sorting_id'   =>  'required',
-            'date_of_birth'   =>  'nullable|date_format:d/m/Y',
-            'date_joined'   =>  'nullable|date_format:d/m/Y',
-            'designation'   =>  'required',
-            'basic_pay'     =>  'numeric|min:0',
-            'element_car'   =>  'nullable|numeric|min:0',
-            'element_rent'   =>  'nullable|numeric|min:0',
-            'element_other'   =>  'nullable|numeric|min:0',
-            'children'   =>  'nullable|integer|min:0|max:10',
-        ]);
+        $this->validate($request, Employee::validationRules());
     }
 
     /**
@@ -87,9 +75,9 @@ class EmployeeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Employee $employee)
     {
-        //
+        return view('employees.edit')->with(compact('employee'));
     }
 
     /**
@@ -101,7 +89,7 @@ class EmployeeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, Employee::validationRules());
     }
 
     /**

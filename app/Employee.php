@@ -8,7 +8,7 @@ class Employee extends Model
 {
     //
 	protected $dates = [
-		'created_at', 'updated_at', 'date_of_birth', 'date_joined'
+		'created_at', 'updated_at'
 	];
 
 	public static function get_by_tarzan_id($tarzan_id = ''){
@@ -38,5 +38,21 @@ class Employee extends Model
 
 	public function calculate_take_home(){
 
+	}
+
+	public static function validationRules(){
+		return [
+            'name'  =>  'required',
+            'tarzan_id' => 'required',
+            'tema_sorting_id'   =>  'required',
+            'date_of_birth'   =>  'nullable|date_format:d-m-Y',
+            'date_joined'   =>  'nullable|date_format:d-m-Y',
+            'designation'   =>  'required',
+            'basic_pay'     =>  'numeric|min:0',
+            'element_car'   =>  'nullable|numeric|min:0',
+            'element_rent'   =>  'nullable|numeric|min:0',
+            'element_other'   =>  'nullable|numeric|min:0',
+            'children'   =>  'nullable|integer|min:0|max:10',
+        ];
 	}
 }
