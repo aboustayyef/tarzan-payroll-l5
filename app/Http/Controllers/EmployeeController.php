@@ -40,10 +40,7 @@ class EmployeeController extends Controller
     public function create()
     {
         $employee = new Employee;
-        $employee->soap = 1;
-        $employee->disabled = 1;
-        $employee->contributes_to_ssf = 1;
-        $employee->mode_of_payment = 'cheque';
+        $employee->setDefaults();
         return view('employees.create')->with(compact('employee'));
     }
 
@@ -56,6 +53,8 @@ class EmployeeController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, Employee::validationRules());
+        $e = Employee::create($request->except(['_token']));
+        return $e;
     }
 
     /**

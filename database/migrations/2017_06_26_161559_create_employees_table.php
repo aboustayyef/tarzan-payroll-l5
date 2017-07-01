@@ -29,7 +29,7 @@ class CreateEmployeesTable extends Migration
             $table->decimal('element_other',8,2)->default(0.00);
             $table->boolean('union')->default(1);
             $table->boolean('wife')->default(1);
-            $table->unsignedTinyInteger('children')->default(2);
+            $table->unsignedTinyInteger('children')->default(2)->nullable();
             $table->boolean('contributes_to_ssf')->default(1);
             $table->boolean('disabled')->default(0);
             $table->boolean('soap')->default(0);
