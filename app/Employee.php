@@ -85,7 +85,7 @@ class Employee extends Model
 
 
 	public static function validationRules(){
-		return [
+		$rules = [
             'name'  =>  'required',
             'tarzan_id' => 'required|unique:employees,tarzan_id',
             'tema_sorting_id'   =>  'required',
@@ -98,5 +98,10 @@ class Employee extends Model
             'element_other'   =>  'nullable|numeric|min:0',
             'children'   =>  'nullable|integer|min:0|max:10',
         ];
+        // remove unique tarzan_id for editing mode
+        if ( request()->isMethod('put')) {
+        	$rules['tarzan_id'] = 'required';
+        }
+        return $rules;
 	}
 }

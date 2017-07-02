@@ -1,7 +1,19 @@
 @extends('layouts.app')
 @section('content')
 	<div class="container">
-		<h1>You're here</h1>
+		@if(session()->has('message'))
+			<div class="alert alert-info">
+				{{session()->get('message')}}
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+		@endif
+
+		<div class="page-header">
+			
+			<h1>Tarzan Employees<h1>
+		</div>
 		<table class="table table-striped">
 			<thead>
 				<tr>

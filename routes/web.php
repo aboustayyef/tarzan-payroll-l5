@@ -33,5 +33,6 @@ Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 
 Route::resource('absentees', 'AbsenteesController', ['only'=> ['index', 'store']]);
 Route::resource('employees', 'EmployeeController');
+Route::resource('periods', 'PeriodsController');
 
 Route::get('/home', 'HomeController@index')->name('home');

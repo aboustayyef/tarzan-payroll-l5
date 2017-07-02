@@ -3,32 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Employee;
+use App\Period;
+use Carbon\Carbon;
 
-class EmployeeController extends Controller
+class PeriodsController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-
     public function index()
     {
-        if (empty(request()->query())) {
-            $sorting='location';
-            $direction = 'desc';
-        }else{
-            $direction = request()->query('direction');
-            $sorting = request()->query('sorting');
-        }
-        $employees = Employee::orderBy($sorting,$direction)->get();
-        return view('employees.index')->with(compact('employees'));
+        $periods = Period::all();
+        return view('periods.index')->with(compact('periods'));
     }
 
     /**
@@ -36,12 +24,10 @@ class EmployeeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-
     public function create()
     {
-        $employee = new Employee;
-        $employee->setDefaults();
-        return view('employees.create')->with(compact('employee'));
+        $period = new Period;
+        return view('periods.create')->with(compact('period'));
     }
 
     /**
@@ -52,9 +38,22 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, Employee::validationRules());
-        $e = Employee::create($request->except(['_token']));
-        return $e;
+        $this->validate($request, [
+            'date'  =>  'required|date_format:d/m/Y'
+        ]);
+        $d = Carbon::createFromFormat('d/m/Y', $request->get('date'));
+        $description = $d->format('F, Y');
+
+        // check if this date doesn't already exist
+        if (Period::where('description',$description)->get()->count() > 0) {
+            return redirect(route('periods.create'))->with('message', 'a period with this month already exists');
+        }
+        Period::create([
+            'date'  =>  $request->get('date'),
+            'has_basic_rate'    => $request->get('has_basic_rate'),
+            'description'   =>  $description,
+        ]);
+
     }
 
     /**
@@ -74,9 +73,9 @@ class EmployeeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Employee $employee)
+    public function edit($id)
     {
-        return view('employees.edit')->with(compact('employee'));
+        //
     }
 
     /**
@@ -86,12 +85,9 @@ class EmployeeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Employee $employee)
+    public function update(Request $request, $id)
     {
-        $this->validate($request, Employee::validationRules());
-        $data = $request->except('_token');
-        $employee->update($data);
-        return redirect(route('employees.index'))->with('message', 'Employee ['. $employee->tarzan_id .'] Information updated');
+        //
     }
 
     /**
@@ -102,6 +98,6 @@ class EmployeeController extends Controller
      */
     public function destroy($id)
     {
-        return 'This will delete employee with ID of ' . $id;
+        //
     }
 }
