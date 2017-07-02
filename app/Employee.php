@@ -17,25 +17,62 @@ class Employee extends Model
 		return 0;
 	}
 
-	public function calculate_total_elements(){
-		return $this->element_car + $this->element_house + $this->element_other;
+	public function age(){
+		$today = Carbon::now();
+		$born = Carbon::createFromFormat('d/m/Y' , $this->date_of_birth);
+		return $today->diffInYears($born);
+	}
+	
+	public function age_above_55(){
+		return $this->age() >= 55;
 	}
 
-	public function calculate_total_emoluments(){
-		return $this->calculate_total_elements() + $this->basic_pay;
-	}
-
-	public function calculate_net_taxable($value='')
+	public function ssf_contribution_employee()
 	{
-		# code...
+		if ($this->contributes_to_ssf) {
+			if ($this->age_above_55()) {
+				return $this->basic_pay * 0.05;
+			} else {
+				return $this->basic_pay * 0.055;
+			}
+			return 0;
+		}
 	}
 
-	public function calculate_tax(){
-
+	public function ssf_contribution_employer()
+	{
+		if ($this->contributes_to_ssf) {
+			if ($this->age_above_55()) {
+				return $this->basic_pay * 0.125;
+			} else {
+				return $this->basic_pay * 0.13;
+			}
+			return 0;
+		}
 	}
 
-	public function calculate_take_home(){
+	public function total_ssf_contributions()
+	{
+		return $this->ssf_contribution_employee() + $this->ssf_contribution_employer();
+	}
 
+	public function elements()
+	{
+		return ($this->element_car + $this->element_rent + $this->element_other);
+	}
+
+	public function total_emoluments()
+	{
+		return $this->elements() + $this->basic_pay;
+	}
+	
+	public function children_marriage_relief()
+	{
+		//(CDbl([wife])*2.5)+IIf([children]>3,CDbl(3*2.5),CDbl([children])*2.5)	
+		$effective_children = $this->children > 3 ? 3 : $this->children;
+		$cm = $this->wife? 2.5 : 0;
+		$cm += $effective_children * 2.5;
+		return $cm; 
 	}
 
 	// Date fields accessors and mutators;

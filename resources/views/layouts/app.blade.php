@@ -28,8 +28,9 @@
                     </button>
 
                     <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }}
+                    <a class="navbar-brand" href="{{ url('/') }}" style="height:70px">
+                        <img src="/img/tarzan-logo.png" height="45px">
+                        {{-- {{ config('app.name', 'Laravel') }} --}}
                     </a>
                 </div>
 
