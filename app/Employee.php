@@ -31,9 +31,9 @@ class Employee extends Model
 	{
 		if ($this->contributes_to_ssf) {
 			if ($this->age_above_55()) {
-				return $this->basic_pay * 0.05;
+				return round($this->basic_pay * 0.05, 2);
 			} else {
-				return $this->basic_pay * 0.055;
+				return round($this->basic_pay * 0.055, 2);
 			}
 			return 0;
 		}
@@ -43,9 +43,9 @@ class Employee extends Model
 	{
 		if ($this->contributes_to_ssf) {
 			if ($this->age_above_55()) {
-				return $this->basic_pay * 0.125;
+				return round($this->basic_pay * 0.125, 2);
 			} else {
-				return $this->basic_pay * 0.13;
+				return round($this->basic_pay * 0.13, 2);
 			}
 			return 0;
 		}
@@ -53,7 +53,7 @@ class Employee extends Model
 
 	public function total_ssf_contributions()
 	{
-		return $this->ssf_contribution_employee() + $this->ssf_contribution_employer();
+		return round($this->ssf_contribution_employee() + $this->ssf_contribution_employer(), 2);
 	}
 
 	public function elements()
@@ -73,6 +73,48 @@ class Employee extends Model
 		$cm = $this->wife? 2.5 : 0;
 		$cm += $effective_children * 2.5;
 		return $cm; 
+	}
+
+	public function disability_relief()
+	{
+		if ($this->disabled) {
+			return round($this->basic_pay * 0.25, 2);
+		}
+		return 0;
+	}
+
+	public function net_taxable()
+	{
+		// [Total_Emoluments]-[Children_Marriage_Relief]-[Disability_Relief]-[SSF_Contribution_Employee]
+		return ($this->total_emoluments() - $this->children_marriage_relief() - $this->disability_relief() - $this->ssf_contribution_employee() );
+	}
+
+	public function union_dues()
+	{
+		return ($this->union? $this->basic_pay * 0.02 : 0.00);
+	}
+
+	public function absence_deduction()
+	{
+		// Round([basic_pay]*[Days_Absent]/27,2)
+		return round($this->basic_pay * $this->days_absent / 27 , 2);
+	}
+
+	public function ff_levy()
+	{
+		return ($this->union? 0.5 : 0);
+	}
+
+	public function tax_payable()
+	{
+		$t = new TaxCalculator;
+		return $t->getTax($this->net_taxable());
+	}
+
+	public function take_home_amount()
+	{
+		// [basic_pay]+[Other_Additions]-[SSF_Contribution_Employee]-[Tax_Payable]-[Absence_Deduction]-[FFLevy]-[Union_Dues]-[Other_Deductions]-[Advance_Amount]
+		return round($this->basic_pay + $this->other_additions - $this->ssf_contribution_employee() - $this->tax_payable() - $this->absence_deduction() - $this->ff_levy() - $this->union_dues() - $this->other_deductions - $this->advance_amount, 2);
 	}
 
 	// Date fields accessors and mutators;

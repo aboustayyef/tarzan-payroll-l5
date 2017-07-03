@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Employee;
 use Carbon\Carbon;
 
 class Period extends Model
@@ -22,13 +21,13 @@ class Period extends Model
 	public function generateAllTransactions(){
 		$employees = Employee::all();
 		foreach ($employees as $key => $employee) {
-			$this->generateTransaction($employee->id);
+			$this->generateTransaction($employee);
 			# code...
 		}
 	}
 
 	public function generateTransaction(Employee $employee){
-		$t = new App\Transaction;
+		$t = new Transaction;
 		$t->employee_id = $employee->id;
 		$t->period_id = $this->id;
 		$t->location = $employee->location;
@@ -66,5 +65,6 @@ class Period extends Model
 		$t->other_deductions_notes = $employee->other_deductions_notes;
 		$t->take_home_amount = $employee->take_home_amount();
 		$t->tax_payable = $employee->tax_payable();
+		$t->save();
 	}
 }

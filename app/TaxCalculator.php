@@ -6,39 +6,50 @@ namespace App;
 class TaxCalculator
 {
 
+/*
+	Chargeable Income (GH¢)	Rate (%)	Tax (GH¢)	Cumulative Chargeable Income (GH¢)	Cumulative Tax (GH¢)
+	First 216				NIL			NIL			216									NIL
+	Next 108				5			5.40		324									5.40
+	Next 151				10			15.10		475									20.50
+	Next 2,765				17.5		483.88		3240								504.38
+	Exceeding 3,240	25	 	 	 
+*/
+
 	private $brackets = 
 	[
 		216	=>	0,
-		108 => 0.5,
+		108 => 0.05,
 		151	=> 0.1,
 		2765 =>	0.175,
 		1000000000000 => 0.25
 	];
 
-	public function getBrackets($figure)
+	public function getBrackets($amount)
 	{
 		$result = [];
+		$remaining_amount = $amount;
 		foreach ($this->brackets as $bracket => $tax) {
-			if ($figure - $bracket > 0) {
+			if ($remaining_amount - $bracket > 0) {
 				$result[] = $bracket;
-				$figure = $figure - $bracket;
+				$remaining_amount = $remaining_amount - $bracket;
 			} else {
-				$result[] = $figure;
+				$result[] = $remaining_amount;
 				return $result;
 			}
 		}
 	}
 
-	public function getTax($figure)
+	public function getTax($amount)
 	{
 		$result = 0;
+		$remaining_amount = $amount;
 		foreach ($this->brackets as $bracket => $tax) {
-			if ($figure - $bracket > 0) {
+			if ($remaining_amount - $bracket > 0) {
 				$result += $bracket * $tax;
-				$figure = $figure - $bracket;
+				$remaining_amount = $remaining_amount - $bracket;
 			} else {
-				$result += $figure * $tax;
-				return $result;
+				$result += $remaining_amount * $tax;
+				return round($result,2);
 			}
 		}
 	}
@@ -53,21 +64,21 @@ IIf(
  */
 
 /*
-	public function brackets($figure)
+	public function brackets($amount)
 	{
 		// testing
 		$available_brackets = [200,500,1000,2500];
 		$result = [];
 		foreach ($available_brackets as $key => $bracket) {
-			if ($figure - $bracket > 0) {
+			if ($amount - $bracket > 0) {
 				$result[] = $bracket;
-				$figure = $figure - $bracket;
+				$amount = $amount - $bracket;
 			} else {
-				$result[] = $figure;
+				$result[] = $amount;
 				return $result;
 			}
 		}
-		$result[] = $figure;
+		$result[] = $amount;
 		return $result;
 	}
 

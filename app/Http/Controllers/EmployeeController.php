@@ -20,15 +20,8 @@ class EmployeeController extends Controller
 
     public function index()
     {
-        if (empty(request()->query())) {
-            $sorting='location';
-            $direction = 'desc';
-        }else{
-            $direction = request()->query('direction');
-            $sorting = request()->query('sorting');
-        }
-        $employees = Employee::orderBy($sorting,$direction)->get();
-        return view('employees.index')->with(compact('employees'));
+        // all data will be handled by Vue and js
+        return view('employees.index');
     }
 
     /**
