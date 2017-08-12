@@ -2,12 +2,22 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Transaction;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
 
 class Period extends Model
 {
 	protected $guarded = [];
+
+	public function transactions(){
+		return $this->hasMany(Transaction::class);
+	}
+
+	public function hasTransactions()
+	{
+		return $this->transactions->count() > 0;
+	}
 
     public function getDateAttribute($date){
 		$c = new Carbon($date);

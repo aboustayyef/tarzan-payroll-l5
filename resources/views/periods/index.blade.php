@@ -14,6 +14,7 @@
 					<tr>
 						<th>ID</th>
 						<th>Description</th>
+						<th>Has Transactions</th>
 						<th></th>
 					</tr>
 				</thead>
@@ -22,6 +23,7 @@
 						<tr>
 							<th>{{$period->id}}</th>
 							<td>{{$period->description}}</td>
+							<td>{{$period->hasTransactions() ? 'Yes' : 'No'}}</td>
 							<td><a href="{{route('periods.edit', $period->id)}}">edit</a></td>
 						</tr>
 					@endforeach

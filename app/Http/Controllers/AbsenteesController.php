@@ -7,6 +7,12 @@ use App\Employee;
 
 class AbsenteesController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
 		$employees = Employee::where('location','LIKE','%tema%')->whereOr('location','Blue Gallery Permanent')->orderBy('tema_sorting_id','asc')->get();
