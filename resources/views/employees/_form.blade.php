@@ -1,3 +1,5 @@
+		<a href="/employees" class="btn btn-warning">Cancel and Go Back</a>				
+		<hr>
 		{{csrf_field()}}
 		<div class="row">
 
@@ -5,7 +7,6 @@
 				First Column 
 			--}}
 			<div class="col-md-6">
-
 				<div class="row">
 					<div class="col-md-6">
 						<div class="form-group{{ $errors->has('tarzan_id') ? ' has-error' : '' }}">

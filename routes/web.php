@@ -15,7 +15,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->middleware('auth');
 
 // Authentication Routes...
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
@@ -23,8 +23,8 @@ Route::post('login', 'Auth\LoginController@login');
 Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 
 // Navigation Routes...
-Route::resource('absentees', 'AbsenteesController', ['only'=> ['index', 'store']]);
 Route::resource('employees', 'EmployeeController');
+Route::resource('absentees', 'AbsenteesController', ['only'=> ['index', 'store']]);
 Route::resource('periods', 'PeriodsController');
 Route::get('/salaries/{period}', 'SalariesController@index');
 

@@ -79,9 +79,9 @@ class PeriodsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Period $period)
     {
-        //
+        return view('periods.edit')->with(compact('period'));
     }
 
     /**
@@ -91,9 +91,20 @@ class PeriodsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Period $period)
     {
-        //
+        $this->validate($request, [
+           'date'  =>  'required|date_format:d/m/Y'
+        ]);
+        $d = Carbon::createFromFormat('d/m/Y', $request->get('date'));
+        $description = $d->format('F, Y');
+
+        $period->date  =  $request->get('date');
+        $period->has_basic_rate    = $request->get('has_basic_rate');
+        $period->description   =  $description;
+        $period->save();
+
+        return redirect('/periods')->with('message', 'period succesfully updated');
     }
 
     /**

@@ -15,6 +15,7 @@
 			<div class="row">
 				<div class="col-md-8">
 					<h1>Tarzan Employees<h1>
+					<a href="/employees/create" class="btn btn-default">Create New</a>
 				</div>
 				<div class="col-md-3 col-md-offset-1">
 					<input type="text" v-model="filter_key" class="form-control pull-right">

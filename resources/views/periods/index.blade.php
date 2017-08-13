@@ -7,13 +7,14 @@
 			</div>
 		@endif
 		<h1>Periods</h1>
-			<a href="/periods/create" class="btn btn-lg btn-primary">Create Period </a>
+			<a href="/periods/create" class="btn btn-default">Create New</a>
 			@if($periods->count() > 0)
 			<table class="table table-striped">
 				<thead>
 					<tr>
 						<th>ID</th>
 						<th>Description</th>
+						<th>Has Basic Rate</th>
 						<th>Has Transactions</th>
 						<th></th>
 					</tr>
@@ -23,6 +24,7 @@
 						<tr>
 							<th>{{$period->id}}</th>
 							<td>{{$period->description}}</td>
+							<td>{{$period->has_basic_rate ? 'Yes' : 'No'}}</td>
 							<td>{{$period->hasTransactions() ? 'Yes' : 'No'}}</td>
 							<td><a href="{{route('periods.edit', $period->id)}}">edit</a></td>
 						</tr>
