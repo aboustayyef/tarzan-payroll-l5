@@ -17,6 +17,6 @@ class ReportsController extends Controller
 
         $transactions = $period->transactions;
         $salaries = new Salaries($transactions);
-        return view('reports.' . $reportType)->with(compact('salaries'));
+        return view('reports.' . $reportType)->with(compact('salaries'))->with(compact('period'));
     }
 }
