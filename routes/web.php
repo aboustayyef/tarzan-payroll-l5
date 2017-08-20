@@ -26,7 +26,7 @@ Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 Route::resource('employees', 'EmployeeController');
 Route::resource('absentees', 'AbsenteesController', ['only'=> ['index', 'store']]);
 Route::resource('periods', 'PeriodsController');
-Route::get('/salaries/{period}', 'SalariesController@index');
+Route::get('/reports/{period}/{reportType?}', 'ReportsController@index');
 
 /*
 | for ajax calls mainly to enable sorting

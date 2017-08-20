@@ -11,10 +11,9 @@ class Transaction extends Model
     {
         parent::__construct();
     }
-
-    public function scopeSeniors($query)
+    public function employee()
     {
-        return $query->whereIn('location', $this->locations['seniors']);
+        return $this->belongsTo('App\Employee');
     }
 
 }

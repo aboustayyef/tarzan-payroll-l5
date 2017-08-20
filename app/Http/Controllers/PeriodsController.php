@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Employee;
 use App\Period;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class PeriodsController extends Controller
 {
@@ -54,12 +55,16 @@ class PeriodsController extends Controller
         if (Period::where('description',$description)->get()->count() > 0) {
             return redirect(route('periods.create'))->with('message', 'a period with this month already exists');
         }
-        Period::create([
+        $period = Period::create([
             'date'  =>  $request->get('date'),
             'has_basic_rate'    => $request->get('has_basic_rate'),
             'description'   =>  $description,
         ]);
 
+        // Now Create Transactions
+        $period->generateAllTransactions();
+
+        return redirect('/periods')->with('message', 'period and all related transactions created');
     }
 
     /**
@@ -113,8 +118,14 @@ class PeriodsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Period $period)
     {
-        //
+        // destroy all records related to the period
+        $relatedTransactions = $period->transactions;
+        foreach ($relatedTransactions as $key => $transaction) {
+            $transaction->delete();
+        }
+        $period->delete();
+        return redirect('/periods')->with('message','Period and all its transactions succesfully deleted');
     }
 }

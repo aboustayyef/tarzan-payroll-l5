@@ -123,6 +123,7 @@ class Employee extends Model
 		$c = new Carbon($date);
 		return $c->format('d/m/Y');
 	}
+
 	public function getDateOfBirthAttribute($date){
 		$c = new Carbon($date);
 		return $c->format('d/m/Y');
@@ -136,6 +137,7 @@ class Employee extends Model
 			$this->attributes['date_joined'] = $c;
 		}
 	}
+
 	public function setDateOfBirthAttribute($date){
 		if (empty($date)) {
 			$this->attributes['date_of_birth'] = null;	
@@ -161,7 +163,6 @@ class Employee extends Model
 		$this->other_additions = 0.00;
 		$this->other_deductions = 0.00;
 	}
-
 
 	public static function validationRules(){
 		$rules = [

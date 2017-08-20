@@ -57,5 +57,27 @@ class Salaries
     {
        return $this->filterBySeniority('seniors');
     }
+
+    public function groups()
+    {
+        return collect(
+        [
+            'Seniors' => 
+            [
+                'Directors'     =>  $this->filterByLocation('Directors'),
+                'Management'    =>  $this->filterByLocation('Management')
+            ],
+
+            'Juniors' =>
+            [
+                "Accra Head Office"         => $this->filterByLocation('Accra Head Office'),
+                "Blue Gallery Permanent"    => $this->filterByLocation("Blue Gallery Permanent"),
+                "Container Depot (Tema)"    => $this->filterByLocation("Container Depot (Tema)"),
+                "Tema Admin"                => $this->filterByLocation("Tema Admin"),
+                "Tema Permanent"            => $this->filterByLocation("Tema Permanent")
+            ]
+        ]
+        );
+    }
 }
 ?>
