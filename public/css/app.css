@@ -1,5 +1,9 @@
 @charset "UTF-8";
 
+.printer_horizontal_break {
+  page-break-after: always;
+}
+
 /*!
  * Bootstrap v3.3.7 (http://getbootstrap.com)
  * Copyright 2011-2016 Twitter, Inc.
